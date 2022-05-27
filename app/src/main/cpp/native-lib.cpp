@@ -1,5 +1,8 @@
 #include <jni.h>
 #include <string>
+//#include "crypto/hex.h"
+//#include "crypto/sha.h"
+//#include "crypto/filters.h"
 
 const jint FLAG_GET_SIGNATURES = 0x00000040;
 
@@ -38,6 +41,44 @@ Java_com_example_myapplicationc_MainActivity_signatureFromJNI(JNIEnv *env, jobje
     auto str = reinterpret_cast<jstring>(env->CallObjectMethod(signature_obj, string_id));
     return str;
 }
+
+//extern "C"
+//JNIEXPORT jstring JNICALL
+//Java_com_example_myapplicationc_MainActivity_signatureFromJNI(JNIEnv *env, jobject obj) {
+//    jclass native_class = env->GetObjectClass(obj);
+//    jmethodID pm_id = env->GetMethodID(native_class, "getPackageManager",
+//                                       "()Landroid/content/pm/PackageManager;");
+//    jobject pm_obj = env->CallObjectMethod(obj, pm_id);
+//    jclass pm_clazz = env->GetObjectClass(pm_obj);
+//    jmethodID package_info_id = env->GetMethodID(pm_clazz, "getPackageInfo",
+//                                                 "(Ljava/lang/String;I)Landroid/content/pm/PackageInfo;");
+//    jclass native_classs = env->GetObjectClass(obj);
+//    jmethodID mId = env->GetMethodID(native_classs, "getPackageName", "()Ljava/lang/String;");
+//    auto pkg_str = reinterpret_cast<jstring>(env->CallObjectMethod(obj, mId));
+//    jobject pi_obj = env->CallObjectMethod(pm_obj, package_info_id, pkg_str, FLAG_GET_SIGNATURES);
+//    jclass pi_clazz = env->GetObjectClass(pi_obj);
+//    jfieldID signatures_fieldId = env->GetFieldID(pi_clazz, "signatures",
+//                                                  "[Landroid/content/pm/Signature;");
+//    jobject signatures_obj = env->GetObjectField(pi_obj, signatures_fieldId);
+//    auto signaturesArray = (jobjectArray) signatures_obj;
+//    jobject signature_obj = env->GetObjectArrayElement(signaturesArray, 0);
+//    jclass signature_clazz = env->GetObjectClass(signature_obj);
+//
+//    jmethodID bytes_id = env->GetMethodID(signature_clazz, "toByteArray", "()[B");
+//    auto certArray = reinterpret_cast<jbyteArray>(env->CallObjectMethod(signature_obj, bytes_id));
+//
+//    CryptoPP::SHA256 hash;
+//    CryptoPP::byte digest[CryptoPP::SHA256::DIGESTSIZE];
+//    hash.CalculateDigest(digest, (const CryptoPP::byte *) certArray, 1);
+//
+//    CryptoPP::HexEncoder encoder;
+//    std::string output;
+//    encoder.Attach(new CryptoPP::StringSink(output));
+//    encoder.Put(digest, sizeof(digest));
+//    encoder.MessageEnd();
+//
+//    return env->NewStringUTF(output.c_str());
+//}
 
 extern "C"
 JNIEXPORT jstring JNICALL

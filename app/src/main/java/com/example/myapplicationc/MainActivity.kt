@@ -1,9 +1,12 @@
 package com.example.myapplicationc
 
 import android.annotation.SuppressLint
+import android.content.pm.PackageManager
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.example.myapplicationc.databinding.ActivityMainBinding
+import org.apache.commons.codec.binary.Hex
+import java.security.MessageDigest
 
 class MainActivity : AppCompatActivity() {
 
@@ -22,10 +25,14 @@ class MainActivity : AppCompatActivity() {
 
 //    val packageInfo = packageManager.getPackageInfo(packageName, PackageManager.GET_SIGNATURES)
 //    val signingInfo = packageInfo.signatures
-//    binding.sampleText2.text = signingInfo.firstOrNull()?.toCharsString()
+//    val certArray = signingInfo[0].toByteArray()
+//    val md = MessageDigest.getInstance("SHA256")
+//    val digest = md.digest(certArray)
+
+//    binding.sampleText2.text = Hex.encodeHexString(digest)
     binding.sampleText2.text = signatureFromJNI()
 
-    val packageInfo = packageManager.getPackageInfo(packageName, 0)
+//    val packageInfo = packageManager.getPackageInfo(packageName, 0)
 
 //    binding.sampleText3.text = packageInfo.versionName
     binding.sampleText3.text = versionNameFromJNI()
