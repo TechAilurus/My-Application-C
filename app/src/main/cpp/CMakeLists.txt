@@ -5,6 +5,8 @@
 
 cmake_minimum_required(VERSION 3.18.1)
 
+set(lib_src_DIR ${CMAKE_CURRENT_SOURCE_DIR})
+
 # Declares and names the project.
 
 project("cencrypt")
@@ -22,6 +24,8 @@ add_library( # Sets the name of the library.
 
         # Provides a relative path to your source file(s).
         encrypt.cpp)
+
+add_subdirectory(${lib_src_DIR}/cryptopp ${lib_build_DIR}/cryptopp)
 
 #include_directories(src/main/cpp/crypto/)
 
