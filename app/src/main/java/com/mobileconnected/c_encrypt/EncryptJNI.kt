@@ -1,13 +1,14 @@
-package com.example.myapplicationc
+package com.mobileconnected.c_encrypt
 
 import android.annotation.SuppressLint
+import android.content.Context
 import android.content.pm.PackageManager
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import com.example.myapplicationc.databinding.ActivityMainBinding
+import com.mobileconnected.c_encrypt.databinding.ActivityMainBinding
 import java.security.MessageDigest
 
-class MainActivity : AppCompatActivity() {
+class EncryptJNI : AppCompatActivity() {
 
   private lateinit var binding: ActivityMainBinding
 
@@ -19,7 +20,7 @@ class MainActivity : AppCompatActivity() {
     setContentView(binding.root)
 
     // Example of a call to a native method
-    binding.sampleText.text = appIDFromJNI()
+    binding.sampleText.text = appIDFromJNI(this)
 
     val packageInfo = packageManager.getPackageInfo(packageName, PackageManager.GET_SIGNATURES)
     val signingInfo = packageInfo.signatures
@@ -28,23 +29,23 @@ class MainActivity : AppCompatActivity() {
     val digest = md.digest(certArray)
 
 //    binding.sampleText2.text = Hex.encodeHexString(digest)
-    binding.sampleText2.text = signatureFromJNI()
+    binding.sampleText2.text = signatureFromJNI(this)
 
 //    val packageInfo = packageManager.getPackageInfo(packageName, 0)
 
 //    binding.sampleText3.text = packageInfo.versionName
-    binding.sampleText3.text = versionNameFromJNI()
+    binding.sampleText3.text = versionNameFromJNI(this)
   }
 
   /**
    * A native method that is implemented by the 'myapplicationc' native library,
    * which is packaged with this application.
    */
-  private external fun appIDFromJNI(): String
+  private external fun appIDFromJNI(context: Context): String
 
-  private external fun signatureFromJNI(): String
+  private external fun signatureFromJNI(context: Context): String
 
-  private external fun versionNameFromJNI(): String
+  private external fun versionNameFromJNI(context: Context): String
 
   /**
    * A native method that is implemented by the 'myapplicationc' native library,
@@ -52,9 +53,9 @@ class MainActivity : AppCompatActivity() {
    */
 
   companion object {
-    // Used to load the 'myapplicationc' library on application startup.
+    // Used to load the 'cencrypt' library on application startup.
     init {
-      System.loadLibrary("myapplicationc")
+      System.loadLibrary("cencrypt")
     }
   }
 }

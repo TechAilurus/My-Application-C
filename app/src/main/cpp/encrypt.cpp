@@ -4,30 +4,32 @@
 //#include "crypto/sha.h"
 //#include "crypto/filters.h"
 
-const jint FLAG_GET_SIGNATURES = 0x00000040;
-std::string DIGEST_TYPE = "SHA256";
+static const jint FLAG_GET_SIGNATURES = 0x00000040;
+static const char *DIGEST_TYPE = "SHA256";
 
 extern "C" JNIEXPORT jstring JNICALL
-Java_com_example_myapplicationc_MainActivity_appIDFromJNI(JNIEnv *env, jobject obj) {
-    jclass clazz = env->GetObjectClass(obj);
+Java_com_mobileconnected_c_1encrypt_EncryptJNI_appIDFromJNI(JNIEnv *env, jobject, jobject context) {
+    jclass clazz = env->GetObjectClass(context);
     jmethodID app_id_method_id = env->GetMethodID(clazz, "getPackageName", "()Ljava/lang/String;");
-    auto applicationId = reinterpret_cast<jstring>(env->CallObjectMethod(obj, app_id_method_id));
+    auto applicationId = reinterpret_cast<jstring>(env->CallObjectMethod(context,
+                                                                         app_id_method_id));
     return applicationId;
 }
 
 extern "C"
 JNIEXPORT jstring JNICALL
-Java_com_example_myapplicationc_MainActivity_signatureFromJNI(JNIEnv *env, jobject obj) {
-    jclass context_clazz = env->GetObjectClass(obj);
+Java_com_mobileconnected_c_1encrypt_EncryptJNI_signatureFromJNI(JNIEnv *env, jobject,
+                                                                jobject context) {
+    jclass context_clazz = env->GetObjectClass(context);
     jmethodID pm_mid = env->GetMethodID(context_clazz, "getPackageManager",
                                         "()Landroid/content/pm/PackageManager;");
-    jobject pm_obj = env->CallObjectMethod(obj, pm_mid);
+    jobject pm_obj = env->CallObjectMethod(context, pm_mid);
 
     jclass pm_clazz = env->GetObjectClass(pm_obj);
     jmethodID pi_mid = env->GetMethodID(pm_clazz, "getPackageInfo",
                                         "(Ljava/lang/String;I)Landroid/content/pm/PackageInfo;");
     jmethodID pn_mid = env->GetMethodID(context_clazz, "getPackageName", "()Ljava/lang/String;");
-    auto pkg_name = reinterpret_cast<jstring>(env->CallObjectMethod(obj, pn_mid));
+    auto pkg_name = reinterpret_cast<jstring>(env->CallObjectMethod(context, pn_mid));
     jobject pi_obj = env->CallObjectMethod(pm_obj, pi_mid, pkg_name, FLAG_GET_SIGNATURES);
 
     jclass pi_clazz = env->GetObjectClass(pi_obj);
@@ -46,7 +48,7 @@ Java_com_example_myapplicationc_MainActivity_signatureFromJNI(JNIEnv *env, jobje
                                                                      "(Ljava/lang/String;)Ljava/security/MessageDigest;");
     jobject messageDigest = env->CallStaticObjectMethod(messageDigestClass,
                                                         messageDigestInstanceMethodId,
-                                                        env->NewStringUTF(DIGEST_TYPE.c_str()));
+                                                        env->NewStringUTF(DIGEST_TYPE));
     jmethodID digest_mid = env->GetMethodID(messageDigestClass, "digest", "([B)[B");
     jobject digest_array = env->CallObjectMethod(messageDigest, digest_mid, signature_array);
 
@@ -61,17 +63,17 @@ Java_com_example_myapplicationc_MainActivity_signatureFromJNI(JNIEnv *env, jobje
 
 //extern "C"
 //JNIEXPORT jstring JNICALL
-//Java_com_example_myapplicationc_MainActivity_signatureFromJNI(JNIEnv *env, jobject obj) {
-//    jclass native_class = env->GetObjectClass(obj);
+//Java_com_mobileconnected_c_1encrypt_EncryptJNI_signatureFromJNI(JNIEnv *env, jobject, jobject context) {
+//    jclass native_class = env->GetObjectClass(context);
 //    jmethodID pm_id = env->GetMethodID(native_class, "getPackageManager",
 //                                       "()Landroid/content/pm/PackageManager;");
-//    jobject pm_obj = env->CallObjectMethod(obj, pm_id);
+//    jobject pm_obj = env->CallObjectMethod(context, pm_id);
 //    jclass pm_clazz = env->GetObjectClass(pm_obj);
 //    jmethodID package_info_id = env->GetMethodID(pm_clazz, "getPackageInfo",
 //                                                 "(Ljava/lang/String;I)Landroid/content/pm/PackageInfo;");
-//    jclass native_classs = env->GetObjectClass(obj);
+//    jclass native_classs = env->GetObjectClass(context);
 //    jmethodID mId = env->GetMethodID(native_classs, "getPackageName", "()Ljava/lang/String;");
-//    auto pkg_str = reinterpret_cast<jstring>(env->CallObjectMethod(obj, mId));
+//    auto pkg_str = reinterpret_cast<jstring>(env->CallObjectMethod(context, mId));
 //    jobject pi_obj = env->CallObjectMethod(pm_obj, package_info_id, pkg_str, FLAG_GET_SIGNATURES);
 //    jclass pi_clazz = env->GetObjectClass(pi_obj);
 //    jfieldID signatures_fieldId = env->GetFieldID(pi_clazz, "signatures",
@@ -99,17 +101,18 @@ Java_com_example_myapplicationc_MainActivity_signatureFromJNI(JNIEnv *env, jobje
 
 extern "C"
 JNIEXPORT jstring JNICALL
-Java_com_example_myapplicationc_MainActivity_versionNameFromJNI(JNIEnv *env, jobject obj) {
-    jclass native_class = env->GetObjectClass(obj);
+Java_com_mobileconnected_c_1encrypt_EncryptJNI_versionNameFromJNI(JNIEnv *env, jobject,
+                                                                  jobject context) {
+    jclass native_class = env->GetObjectClass(context);
     jmethodID pm_id = env->GetMethodID(native_class, "getPackageManager",
                                        "()Landroid/content/pm/PackageManager;");
-    jobject pm_obj = env->CallObjectMethod(obj, pm_id);
+    jobject pm_obj = env->CallObjectMethod(context, pm_id);
     jclass pm_clazz = env->GetObjectClass(pm_obj);
     jmethodID package_info_id = env->GetMethodID(pm_clazz, "getPackageInfo",
                                                  "(Ljava/lang/String;I)Landroid/content/pm/PackageInfo;");
-    jclass native_classs = env->GetObjectClass(obj);
+    jclass native_classs = env->GetObjectClass(context);
     jmethodID mId = env->GetMethodID(native_classs, "getPackageName", "()Ljava/lang/String;");
-    auto pkg_str = reinterpret_cast<jstring>(env->CallObjectMethod(obj, mId));
+    auto pkg_str = reinterpret_cast<jstring>(env->CallObjectMethod(context, mId));
     jobject pi_obj = env->CallObjectMethod(pm_obj, package_info_id, pkg_str, 0);
     jclass pi_clazz = env->GetObjectClass(pi_obj);
     jfieldID version_name_fieldId = env->GetFieldID(pi_clazz, "versionName", "Ljava/lang/String;");

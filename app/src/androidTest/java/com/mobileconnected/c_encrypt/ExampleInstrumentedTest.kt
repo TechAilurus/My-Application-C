@@ -1,4 +1,4 @@
-package com.example.myapplicationc
+package com.mobileconnected.c_encrypt
 
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.ext.junit.runners.AndroidJUnit4

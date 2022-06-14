@@ -1,4 +1,4 @@
-package com.example.myapplicationc
+package com.mobileconnected.c_encrypt
 
 import org.junit.Test
 
