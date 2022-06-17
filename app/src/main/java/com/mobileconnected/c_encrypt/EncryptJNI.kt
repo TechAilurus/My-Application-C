@@ -35,6 +35,16 @@ class EncryptJNI : AppCompatActivity() {
 
 //    binding.sampleText3.text = packageInfo.versionName
     binding.sampleText3.text = versionNameFromJNI(this)
+
+    binding.sampleButton1.setOnClickListener {
+      if (binding.sampleEditText1.text.isNullOrBlank()) return@setOnClickListener
+      binding.sampleEditText1.setText(encryptFromJNI(this, binding.sampleEditText1.text.toString()))
+    }
+
+    binding.sampleButton2.setOnClickListener {
+      if (binding.sampleEditText1.text.isNullOrBlank()) return@setOnClickListener
+      binding.sampleEditText1.setText(decryptFromJNI(this, binding.sampleEditText1.text.toString()))
+    }
   }
 
   /**
@@ -46,6 +56,11 @@ class EncryptJNI : AppCompatActivity() {
   private external fun signatureFromJNI(context: Context): String
 
   private external fun versionNameFromJNI(context: Context): String
+
+  private external fun decryptFromJNI(context: Context, content: String): String
+
+  private external fun encryptFromJNI(context: Context, content: String): String
+
 
   /**
    * A native method that is implemented by the 'myapplicationc' native library,

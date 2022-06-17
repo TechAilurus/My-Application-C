@@ -39,4 +39,22 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <EditText
+        android:id="@+id/sample_edit_text1"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:hint="待加密内容或者解密后内容" />
+
+    <Button
+        android:id="@+id/sample_button1"
+        android:layout_width="100dp"
+        android:layout_height="50dp"
+        android:text="加密" />
+
+    <Button
+        android:id="@+id/sample_button2"
+        android:layout_width="100dp"
+        android:layout_height="50dp"
+        android:text="解密" />
+
 </LinearLayout>
