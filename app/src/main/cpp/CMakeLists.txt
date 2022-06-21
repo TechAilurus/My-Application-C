@@ -14,7 +14,7 @@ set(distribution_DIR ${CMAKE_CURRENT_SOURCE_DIR}/../../../../distribution)
 
 add_library(lib_cryptopp SHARED IMPORTED)
 set_target_properties(lib_cryptopp PROPERTIES IMPORTED_LOCATION
-        ${distribution_DIR}/cryptopp/lib/${ANDROID_ABI}/libcryptopp.so)
+        ${distribution_DIR}/cryptopp/lib/${ANDROID_ABI}/lib/libcryptopp.a)
 
 # Creates and names a library, sets it as either STATIC
 # or SHARED, and provides the relative paths to its source code.
