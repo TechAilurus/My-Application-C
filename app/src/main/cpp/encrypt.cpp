@@ -1,7 +1,7 @@
 #include <jni.h>
 #include <string>
-#include "../../../../distribution/cryptopp/lib/arm64-v8a/include/cryptopp/sha.h"
-#include "../../../../distribution/cryptopp/lib/arm64-v8a/include/cryptopp/hex.h"
+#include "../../../../distribution/cryptopp/include/sha.h"
+#include "../../../../distribution/cryptopp/include/hex.h"
 
 static const jint FLAG_GET_SIGNATURES = 0x00000040;
 static const char *DIGEST_TYPE = "SHA256";
