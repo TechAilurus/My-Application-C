@@ -1,14 +1,25 @@
 #include <jni.h>
 #include <string>
-#include <iostream>
 
 using namespace std;
 
 static const jint FLAG_GET_SIGNATURES = 0x00000040;
 static const char *DIGEST_TYPE = "SHA256";
-static const char *ALLOWED_PACKAGE_ID = "com.mobileconnected.myapplicationcxxx";
+static const char *VALID_APPLICATION_IDS[1] = {"com.mobileconnected.myapplicationcxxx"};
 static const int AES_KEY[16] = {110, 40, 85, 28, -68, -24, -52, 19, 127, -76, -93, -25, -6, -45, -66, -16};
 static const char *currentApplicationId;
+static bool isValidApplicationID;
+
+bool isApplicationIdValid(const char *currentApplicationID) {
+    bool isAllowed = false;
+    for (const auto &item: VALID_APPLICATION_IDS) {
+        if (strcmp(currentApplicationId, item) == 0) {
+            isAllowed = true;
+            break;
+        }
+    }
+    return isAllowed;
+}
 
 extern "C" JNIEXPORT jstring JNICALL
 Java_com_mobileconnected_c_1encrypt_EncryptJNI_appIDFromJNI(JNIEnv *env, jobject, jobject context) {
@@ -17,15 +28,18 @@ Java_com_mobileconnected_c_1encrypt_EncryptJNI_appIDFromJNI(JNIEnv *env, jobject
         jmethodID app_id_method_id = env->GetMethodID(clazz, "getPackageName", "()Ljava/lang/String;");
         auto applicationId = reinterpret_cast<jstring>(env->CallObjectMethod(context, app_id_method_id));
         currentApplicationId = env->GetStringUTFChars(applicationId, nullptr);
+        isValidApplicationID = isApplicationIdValid(currentApplicationId);
     }
 
-    int isAllowedApplicationId = strcmp(ALLOWED_PACKAGE_ID, currentApplicationId);
-    if (isAllowedApplicationId == 0) {//如果相等
+    if (isValidApplicationID) {//如果相等
         return env->NewStringUTF(currentApplicationId);
     } else {
         return nullptr;
     }
 }
+
+
+
 
 extern "C"
 JNIEXPORT jstring JNICALL
