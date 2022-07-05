@@ -8,6 +8,8 @@ import androidx.appcompat.app.AppCompatActivity
 import com.mobileconnected.c_encrypt.databinding.ActivityMainBinding
 import java.security.MessageDigest
 
+const val TAG = "EncryptJNI"
+
 class EncryptJNI : AppCompatActivity() {
 
   private lateinit var binding: ActivityMainBinding
@@ -20,7 +22,8 @@ class EncryptJNI : AppCompatActivity() {
     setContentView(binding.root)
 
     // Example of a call to a native method
-    binding.sampleText.text = appIDFromJNI(this)
+    binding.sampleText.text = appIDFromJNI(this) ?: "null"
+    binding.sampleText.text = appIDFromJNI(this) ?: "null"
 
     val packageInfo = packageManager.getPackageInfo(packageName, PackageManager.GET_SIGNATURES)
     val signingInfo = packageInfo.signatures
@@ -51,9 +54,9 @@ class EncryptJNI : AppCompatActivity() {
    * A native method that is implemented by the 'myapplicationc' native library,
    * which is packaged with this application.
    */
-  private external fun appIDFromJNI(context: Context): String
+  private external fun appIDFromJNI(context: Context): String?
 
-  private external fun signatureFromJNI(context: Context): String
+  private external fun signatureFromJNI(context: Context): String?
 
   private external fun versionNameFromJNI(context: Context): String
 
