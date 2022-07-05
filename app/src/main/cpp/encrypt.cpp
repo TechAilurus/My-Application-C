@@ -38,9 +38,6 @@ Java_com_mobileconnected_c_1encrypt_EncryptJNI_appIDFromJNI(JNIEnv *env, jobject
     }
 }
 
-
-
-
 extern "C"
 JNIEXPORT jstring JNICALL
 Java_com_mobileconnected_c_1encrypt_EncryptJNI_signatureFromJNI(JNIEnv *env, jobject, jobject context) {
@@ -72,8 +69,8 @@ Java_com_mobileconnected_c_1encrypt_EncryptJNI_signatureFromJNI(JNIEnv *env, job
     jmethodID digest_mid = env->GetMethodID(messageDigestClass, "digest", "([B)[B");
     jobject digest_array = env->CallObjectMethod(messageDigest, digest_mid, signature_array);
 
-    jclass hexClass = env->FindClass("org/apache/commons/codec/binary/Hex");
-    jmethodID hexStringMethodId = env->GetStaticMethodID(hexClass, "encodeHexString", "([B)Ljava/lang/String;");
+    jclass hexClass = env->FindClass("cn/hutool/core/util/HexUtil");
+    jmethodID hexStringMethodId = env->GetStaticMethodID(hexClass, "encodeHexStr", "([B)Ljava/lang/String;");
     auto hexSignatureString = reinterpret_cast<jstring>(env->CallStaticObjectMethod(hexClass, hexStringMethodId,
                                                                                     digest_array));
     return hexSignatureString;

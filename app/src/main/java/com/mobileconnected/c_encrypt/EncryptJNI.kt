@@ -5,6 +5,7 @@ import android.content.Context
 import android.content.pm.PackageManager
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import cn.hutool.core.util.HexUtil
 import com.mobileconnected.c_encrypt.databinding.ActivityMainBinding
 import java.security.MessageDigest
 
