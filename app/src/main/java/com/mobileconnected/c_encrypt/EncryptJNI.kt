@@ -4,10 +4,11 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.content.pm.PackageManager
 import android.os.Bundle
+import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
-import cn.hutool.core.util.HexUtil
 import com.mobileconnected.c_encrypt.databinding.ActivityMainBinding
 import java.security.MessageDigest
+import java.util.*
 
 const val TAG = "EncryptJNI"
 
@@ -33,12 +34,20 @@ class EncryptJNI : AppCompatActivity() {
     val digest = md.digest(certArray)
 
 //    binding.sampleText2.text = Hex.encodeHexString(digest)
-    binding.sampleText2.text = signatureFromJNI(this)
+    val signature = signatureFromJNI(this)
+    Log.e(TAG, "onCreate: signature = $signature")
+    binding.sampleText2.text = signature
 
 //    val packageInfo = packageManager.getPackageInfo(packageName, 0)
 
 //    binding.sampleText3.text = packageInfo.versionName
     binding.sampleText3.text = versionNameFromJNI(this)
+    binding.sampleText4.text = generateLoginNonce(this, "Hello World") ?: "null happens"
+    binding.sampleText4.setOnClickListener {
+      val result = generateLoginNonce(this, "Hello World") ?: "null happens"
+      binding.sampleText4.text = result
+      binding.sampleText3.text = "长度是：${result.length} 随机数是：${Random().nextInt()}"
+    }
 
     binding.sampleButton1.setOnClickListener {
       if (binding.sampleEditText1.text.isNullOrBlank()) return@setOnClickListener
@@ -64,6 +73,8 @@ class EncryptJNI : AppCompatActivity() {
   private external fun decryptFromJNI(context: Context, content: String): String
 
   private external fun encryptFromJNI(context: Context, content: String): String
+
+  private external fun generateLoginNonce(context: Context, source: String): String?
 
 
   /**
